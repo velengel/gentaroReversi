@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<title>beat xxgentaroxx</title>
+		<script type="text/javascript">
+			window.onload = function(){
+				let canvas = document.getElementsByTagName("canvas")[0];
+				let context = canvas.getContext("2d");
+				let cenX = 220, cenY = 140;
+				let size = 60;
+				let dx = [0,0,-1,-1,-1,1,1,1], dy = [1,-1,-1,0,1,-1,0,1];
+				var turn = 0;
+				var state=0;
+				var x = cenX + size/2, y = cenY + size/2;
+				var nx = (x-cenX+size/2)/size, ny = (y-cenY+size/2)/size;
+				var board = [
+					[0,0,0,0,0,0,0,0,0,0],
+					[0,0,0,0,0,0,0,0,0,0],
+					[0,0,0,0,0,0,0,0,0,0],
+					[0,0,0,0,0,0,0,0,0,0],
+					[0,0,0,0,1,2,0,0,0,0],
+					[0,0,0,0,2,1,0,0,0,0],
+					[0,0,0,0,0,0,0,0,0,0],
+					[0,0,0,0,0,0,0,0,0,0],
+					[0,0,0,0,0,0,0,0,0,0],
+					[0,0,0,0,0,0,0,0,0,0],
+				]
+				var gen = new Image(), gen2 = new Image();
+				gen.src = "gen.png", gen2.src = "gen2.png";
+
+				//var rgen = new Image(), rgen2 = new Image();
+			//	rgen.src = "rgen.gif", rgen2.src = "rgen2.gif";
+				function render(){
+
+					if(state==0){
+						context.fillStyle = "black";
+						context.fillRect(0,0,1000,1000);
+
+						context.fillStyle = "yellow";
+						context.beginPath();
+						context.fillRect(x,y,size-1,size-1);
+
+						context.fillStyle = "green";
+						context.beginPath();
+						context.fillRect(size+20,size+20,size,size);
+						if(turn%2==0)context.drawImage(gen, size+20, size+20, size, size);
+						else context.drawImage(gen2, size+20, size+20, size, size);
+
+						nx = (x-cenX+size/2)/size, ny = (y-cenY+size/2)/size;
+
+						context.font="35px 'consolas'";
+						context.fillStyle="white";
+						context.fillText("player",size,size);
+						context.fillText("W : ↑",size,size*4);
+						context.fillText("A : ←",size,size*5);
+						context.fillText("S : ↓",size,size*6);
+						context.fillText("D : →",size,size*7);
+						context.fillText("Enter : put",size,size*8);
+
+						var cntss = cnt();
+						if(cntss[0]==0 || cntss[1]==0 || cntss[2]==0)state=1;
+						else{
+							context.fillStyle = "green";
+							context.beginPath();
+							context.fillRect(size*13,size,size,size);
+							context.fillRect(size*13,size*2,size,size);
+							context.drawImage(gen, size*13, size, size, size);
+							context.drawImage(gen2, size*13, size*2, size, size);
+							context.font="35px 'consolas'";
+							context.fillStyle="white";
+							context.fillText(cntss[1],size*14+30,size+45);
+							context.fillText(cntss[2],size*14+30,size*2+45);
+						}
+						var pass=false;
+						for(var i=1;i<9;++i){
+							for(var j=1;j<9;++j){
+								context.fillStyle = "green";
+								context.beginPath();
+								context.fillRect(cenX-size/2+i*size+1,cenY-size/2+j*size+1,size-3,size-3);
+								if(board[i][j] == 1){
+									context.drawImage(gen, cenX-size/2+i*size,cenY-size/2+j*size,size,size);
+								} else if(board[i][j] == 2){
+									context.drawImage(gen2, cenX-size/2+i*size,cenY-size/2+j*size,size,size);
+								}else{
+									if(invertcheck(i,j)){
+										context.fillStyle = "blue";
+										context.beginPath();
+										context.fillRect(cenX-size/2+i*size+1,cenY-size/2+j*size+1,size-3,size-3);
+										pass = true;
+									}
+									/*context.fillStyle = "green";
+									context.beginPath();
+									context.fillRect(cenX-size/2+i*size+1,cenY-size/2+j*size+1,size-3,size-3);*/
+								}
+							}
+						}
+						if(pass==false){
+							turn++;
+							pass=true;
+						}
+						if(turn>100)state=1;
+
+					}else{
+
+						cntss=cnt();
+						if(cntss[1]>cntss[2]){
+							context.fillStyle = "green";
+							context.beginPath();
+							context.fillRect(size*14,size+20,size*2,size*2);
+							context.drawImage(gen, size*14, size+20, size*2, size*2);
+							context.font="35px 'consolas'";
+							context.fillStyle="white";
+							context.fillText("win!",size*14+30,size);
+						}else if(cntss[1]<cntss[2]){
+							context.fillStyle = "green";
+							context.beginPath();
+							context.fillRect(size*14,size+20,size*2,size*2);
+							context.drawImage(gen2, size*14, size+20, size*2, size*2);
+							context.font="35px 'consolas'";
+							context.fillStyle="white";
+							context.fillText("win!",size*14+30,size);
+						}else{
+							context.fillStyle = "green";
+							context.beginPath();
+							context.fillRect(size*14,size+20,size,size*2);
+							context.font="35px 'consolas'";
+							context.fillStyle="white";
+							context.fillText("draw!",size*14+30,size);
+							context.drawImage(gen2, size*14, size+20, size, size);
+							context.drawImage(gen, size*14, size+40, size, size);
+						}
+
+					}
+				}
+
+				//let press = false;
+				function animate(){
+					render();
+					requestAnimationFrame(animate);
+				}
+				animate();
+
+				function cnt(){
+					cnts = new Array();
+					cnts[0]=0,cnts[1]=0,cnts[2]=0;
+					for(var i=1;i<9;++i){
+						for(var j=1;j<9;++j){
+							cnts[board[i][j]]++;
+						}
+					}
+					return cnts;
+				}
+
+				function check(a,b){
+					return Boolean(a >= 1 && a < 9 && b >= 1 && b < 9);
+				}
+
+				function invertcheck(xx,yy){
+					var nturn = turn % 2 + 1;
+					for(var i = 0;i < 8; ++i){
+						var dxi = dx[i], dyi = dy[i];
+						var nnx = xx+dxi, nny = yy+dyi;
+						if(check(nnx, nny) && board[nnx][nny] == 3 - nturn){
+							if(board[xx][yy]==0){
+								nnx += dxi, nny += dyi;
+								while(board[nnx][nny] == 3 - nturn && check(nnx,nny)){
+									nnx += dxi, nny += dyi;
+								}
+								if(board[nnx][nny] == nturn)return true;
+							}
+						}
+					}
+					return false;
+				}
+
+				function invert(xx,yy){
+					var nturn = turn % 2 + 1;
+					for(var i = 0;i < 8; ++i){
+						var dxi = dx[i], dyi = dy[i];
+						var nnx = xx+dxi, nny = yy+dyi;
+						if(check(nnx, nny) && board[nnx][nny] == 3 - nturn){
+							if(board[xx][yy]==0){
+								var fromx = nnx, fromy = nny;
+								nnx += dxi, nny += dyi;
+
+								while(board[nnx][nny] == 3 - nturn && check(nnx,nny)){
+									nnx += dxi, nny += dyi;
+								}
+								if(board[nnx][nny] == nturn){
+									board[fromx][fromy]=nturn;
+									console.log(nnx);
+									console.log(nny);
+									while(fromx != nnx || fromy != nny){
+										fromx += dxi, fromy += dyi;
+										if(check(fromx, fromy))board[fromx][fromy]=nturn;
+									}
+								}
+							}
+						}
+					}
+				}
+
+				document.onkeydown = function(e){
+					if(e.keyCode == 65 && x > cenX + size / 2)x -= size; //left
+					if(e.keyCode == 87 && y > cenY + size / 2)y -= size; //up
+					if(e.keyCode == 68 && x < cenX + size / 2 + size * 7)x += size; //right
+					if(e.keyCode == 83 && y < cenY + size / 2 + size * 7)y += size; //down
+					if(e.keyCode == 13){
+						//console.log((x-cenX+size/2)/size);
+						if(invertcheck(nx,ny)){
+							invert(nx,ny);
+							board[nx][ny]=(turn++)%2+1;
+						}
+					}
+				};
+			}
+		</script>
+	</head>
+	<body>
+		<canvas width="1000" height="1000">
+		</canvas>
+	</body>
+<html>
