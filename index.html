@@ -56,11 +56,11 @@
 						context.fillText("A : ←",size,size*5);
 						context.fillText("S : ↓",size,size*6);
 						context.fillText("D : →",size,size*7);
-						context.fillText("Enter : put",size,size*8);
+						context.fillText("Enter:put",5,size*8);
 
 						var cntss = cnt();
 						if(cntss[0]==0 || cntss[1]==0 || cntss[2]==0)state=1;
-						else{
+						//else{
 							context.fillStyle = "green";
 							context.beginPath();
 							context.fillRect(size*13,size,size,size);
@@ -71,7 +71,7 @@
 							context.fillStyle="white";
 							context.fillText(cntss[1],size*14+30,size+45);
 							context.fillText(cntss[2],size*14+30,size*2+45);
-						}
+					//	}
 						var pass=false;
 						for(var i=1;i<9;++i){
 							for(var j=1;j<9;++j){
@@ -107,28 +107,28 @@
 						if(cntss[1]>cntss[2]){
 							context.fillStyle = "green";
 							context.beginPath();
-							context.fillRect(size*14,size+20,size*2,size*2);
-							context.drawImage(gen, size*14, size+20, size*2, size*2);
+							context.fillRect(size*14,size*6,size*2,size*2);
+							context.drawImage(gen, size*14, size*6, size*2, size*2);
 							context.font="35px 'consolas'";
 							context.fillStyle="white";
-							context.fillText("win!",size*14+30,size);
+							context.fillText("win!",size*14+30,size*5);
 						}else if(cntss[1]<cntss[2]){
 							context.fillStyle = "green";
 							context.beginPath();
-							context.fillRect(size*14,size+20,size*2,size*2);
-							context.drawImage(gen2, size*14, size+20, size*2, size*2);
+							context.fillRect(size*14,size*6,size*2,size*2);
+							context.drawImage(gen2, size*14, size*6, size*2, size*2);
 							context.font="35px 'consolas'";
 							context.fillStyle="white";
-							context.fillText("win!",size*14+30,size);
+							context.fillText("win!",size*14+30,size*5);
 						}else{
 							context.fillStyle = "green";
 							context.beginPath();
-							context.fillRect(size*14,size+20,size,size*2);
+							context.fillRect(size*14,size*6,size,size*2);
 							context.font="35px 'consolas'";
 							context.fillStyle="white";
-							context.fillText("draw!",size*14+30,size);
-							context.drawImage(gen2, size*14, size+20, size, size);
-							context.drawImage(gen, size*14, size+40, size, size);
+							context.fillText("draw!",size*14+30,size*5);
+							context.drawImage(gen2, size*14, size*6, size, size);
+							context.drawImage(gen, size*14, size*7, size, size);
 						}
 
 					}
