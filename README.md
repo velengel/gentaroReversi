@@ -1,0 +1,2 @@
+# gentaroReversi
+Beat xxgentaroxx
