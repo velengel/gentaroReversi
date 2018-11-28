@@ -12,6 +12,7 @@
 				let dx = [0,0,-1,-1,-1,1,1,1], dy = [1,-1,-1,0,1,-1,0,1];
 				var turn = 0;
 				var state=0;
+				var twflag=0;
 				var x = cenX + size/2, y = cenY + size/2;
 				var nx = (x-cenX+size/2)/size, ny = (y-cenY+size/2)/size;
 				var board = [
@@ -97,6 +98,7 @@
 						}
 						if(pass==false){
 							turn++;
+
 							pass=true;
 							window.alert("pass");
 						}
@@ -105,6 +107,7 @@
 					}else{
 
 						cntss=cnt();
+
 						if(cntss[1]>cntss[2]){
 							context.fillStyle = "green";
 							context.beginPath();
@@ -113,6 +116,11 @@
 							context.font="35px 'consolas'";
 							context.fillStyle="white";
 							context.fillText("win!",size*14+30,size*5);
+							if(twflag==0){
+								twflag=1;
+							window.open("https://twitter.com/intent/tweet?text="+encodeURI(cntss[1] + " : " + cntss[2] + "で黒げんたろうの勝ち！！！ \n https://velengel.github.io/gentaroReversi"
+	),"_blank");
+							}
 						}else if(cntss[1]<cntss[2]){
 							context.fillStyle = "green";
 							context.beginPath();
@@ -121,6 +129,11 @@
 							context.font="35px 'consolas'";
 							context.fillStyle="white";
 							context.fillText("win!",size*14+30,size*5);
+							if(twflag==0){
+								twflag=1;
+								window.open("https://twitter.com/intent/tweet?text="+encodeURI( cntss[1] + " : " + cntss[2] + "で白げんたろうの勝ち！！！ \n https://velengel.github.io/gentaroReversi"
+	),"_blank");
+							}
 						}else{
 							context.fillStyle = "green";
 							context.beginPath();
@@ -130,7 +143,14 @@
 							context.fillText("draw!",size*14+30,size*5);
 							context.drawImage(gen2, size*14, size*6, size, size);
 							context.drawImage(gen, size*14, size*7, size, size);
+							if(twflag==0){
+								twflag=1;
+							window.open("https://twitter.com/intent/tweet?text="+encodeURI( "引き分け！！！！ \n https://velengel.github.io/gentaroReversi"
+	),"_blank");
+							}
 						}
+
+
 
 					}
 				}
